@@ -3,248 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Scrum Board</title>
+    <title>Simple HTML, CSS, and JS</title>
     <style>
-        body {
-            font-family: Arial;
-            color: #555;
+        /* Simple CSS for styling */
+        body{
+          font-family: Arial;
+          color: #555;
         }
-        .form {
-            background-color: #f1f1f1;
-            padding: 20px;
+        .form{
+          background-color: #f1f1f1;
+          padding: 20px;
         }
-        .form input[type="text"] {
-            padding: 10px;
-            box-shadow: inset 2px 2px 2px rgba(2, 5, 0, 0.2);
-            border: none;
+        .form input[type="text"]{
+          padding: 10px;
+          box-shadow: inset 2px 2px 2px rgba(2,5,0,0.2);
+          border: none;
         }
-        .button {
-            display: inline-block;
-            padding: 10px;
-            background: linear-gradient(#79a6e2 2%, #3366aa 5%, #1e4e8e);
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0px 3px 0px #113c75, 0px 5px 5px #333;
-            margin-right: 5px;
+        .button{
+          display: inline-block;
+          padding: 10px;
+          background: linear-gradient(#79a6e2 2%, #3366aa 5%, #1e4e8e);
+          border: none;
+          border-radius: 5px;
+          color: #fff;
+          font-weight: bold;
+          font-size: 16px;
+          box-shadow: 0px 3px 0px #113c75,
+                      0px 5px 5px #333;
+          margin-right: 5px;
         }
-        .button-backlog {
-            background: transparent;
-            box-shadow: none;
-            color: #3366aa;
-            font-weight: normal;
+        
+        .button-backlog{
+          background: transparent;
+          box-shadow: none;
+          color: #3366aa;
+          font-weight: normal;
         }
-        .button-progress {
-            background: transparent;
-            box-shadow: none;
-            color: #c06300;
-            font-weight: normal;
+        .button-progress{
+          background: transparent;
+          box-shadow: none;
+          color: #c06300;
+          font-weight: normal;
         }
-        .button-done {
-            background: transparent;
-            box-shadow: none;
-            color: #007b03;
-            font-weight: normal;
+        .button-done{
+          background: transparent;
+          box-shadow: none;
+          color: #007b03;
+          font-weight: normal;
         }
-        .button-delete {
-            background: transparent;
-            box-shadow: none;
-            color: #be0000;
-            font-weight: normal;
+        .button-delete{
+          background: transparent;
+          box-shadow: none;
+          color: #be0000;
+          font-weight: normal;
         }
-        .flex {
-            display: flex;
-            flex-direction: row;
+        .form > h2{
+          margin-top: 0
         }
-        .scrum-board {
-            flex: 1;
-            padding: 20px;
-            border-right: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
+        .col-3rds{
+          box-sizing: border-box;
+          width:33.333%;
+          float:left;
         }
-        .scrum-board:first-child {
-            border-left: 1px solid #ddd;
+        .flex{
+          display: flex;
+          flex-direction: row;
         }
-        .input-group {
-            position: relative;
-            display: block;
-            padding: 10px;
-            border: 1px solid #dddddd;
-            border-left: 5px solid #ccc;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background-color: #f1f1f1;
+        .scrum-board{
+          flex: 1;
+          padding:20px;
+          border-right:1px solid #ddd;
+          border-bottom:1px solid #ddd;
         }
-        .input-group span {
-            color: #333;
-            font-weight: bold;
+        .scrum-board:first-child{
+          flex: 1;
+          padding:20px;
+          border-left:1px solid #ddd;
         }
-        .overflow {
-            overflow: auto;
+        .input-group{
+          position: relative;
+          display: block;
+          padding: 10px;
+          border: 1px solid #dddddd;
+          border-left: 5px solid #ccc;
+          margin-bottom: 10px;
+          border-radius: 5px;
+          background-color: #f1f1f1;
         }
-        .margin-top-10 {
-            margin-top: 10px;
+        .input-group span{
+          color:#333;
+          font-weight: bold;
         }
-        .drag {
-            font-size: 12px;
-            color: #333;
-            text-decoration: none;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            border: 1px solid #ccc;
-            padding: 3px;
-            border-radius: 5px;
-            cursor: move;
+        .inline{
+          display: inline;
+        }
+        .float-right{
+          float: right;
+        }
+        .overflow{
+          overflow: auto;
+        }
+        .margin-top-10{
+          margin-top: 10px;
+        }
+        .drag{
+          font-size: 12px;
+          color: #333;
+          text-decoration: none;
+          position: absolute;
+            top:5px;
+          right: 5px;
+          border: 1px solid #ccc;
+          padding: 3px;
+          border-radius: 5px;
+          cursor: move;
         }
         .placeholder {
-            display: block;
-            background-color: #fff;
-            border: 5px dashed #ededed;
-            min-height: 100px;
-            margin-bottom: 10px;
+          display: block;
+          background-color: #fff;
+          border: 5px dashed #ededed;
+          min-height: 100px;
+          margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-
-<div ng-app="ScrumApp">
-    <div>
-        <div class="form">
-            <h1>Simple Scrum Board</h1>
-            <input type="text" placeholder="Type Task" id="task" />
-            <button class="button" id="add-button">Add Task</button>
-        </div>
-        <div class="flex">
-            <div class="scrum-board backlog">
+        <div ng-app="ScrumApp">
+          <div>
+            <div class="form">
+              <h1>Simple Scrum Board</h1>
+              <input type="text" placeholder="Type Task" id="task" />
+              <button class="button" id="add-button">Add Task</button>
+            </div>
+            <div class="flex">
+              <div class="scrum-board backlog">
                 <h2>Backlog</h2>
-                <div id="backlog-tasks"></div>
-            </div>
-            <div class="scrum-board in-progress">
-                <h2>In Progress</h2>
-                <div id="in-progress-tasks"></div>
-            </div>
-            <div class="scrum-board done">
+                <div class="input-group overflow">
+                  <span>Wash dishes</span>
+                  <a href="#" class="drag">Drag</a>
+                  <div class="margin-top-10">
+                     <button class="button button-backlog">Backlog</button><button class="button button-progress">In Progress</button><button class="button button-done">Done</button><button class="button button-delete">Delete</button>
+                  </div>
+                </div>
+                <div class="input-group overflow">
+                  <span>Make bed</span>
+                  <a href="#" class="drag">Drag</a>
+                  <div class="margin-top-10">
+                    <button class="button button-backlog">Backlog</button><button class="button button-progress">In Progress</button><button class="button button-done">Done</button><button class="button button-delete">Delete</button>
+                  </div>
+                </div>
+                <div class="input-group overflow">
+                  <span>Cook dinner</span>
+                  <a href="#" class="drag">Drag</a>
+                  <div class="margin-top-10">
+                    <button class="button button-backlog">Backlog</button><button class="button button-progress">In Progress</button><button class="button button-done">Done</button><button class="button button-delete">Delete</button>
+                  </div>
+                </div>
+                <div class="input-group overflow">
+                  <span>Ask wife permission to go on trip</span>
+                  <a href="#" class="drag">Drag</a>
+                  <div class="margin-top-10">
+                    <button class="button button-backlog">Backlog</button><button class="button button-progress">In Progress</button><button class="button button-done">Done</button><button class="button button-delete">Delete</button>
+                  </div>
+                </div>        
+              </div>
+        
+              <div class="scrum-board in-progress">
+                <h2>In progress</h2>
+              </div>
+              <div class="scrum-board done">
                 <h2>Done</h2>
-                <div id="done-tasks"></div>
+              </div>
+        
             </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    //Init
-    init();
-
-    //Button Functions------------------------------------------
-    function init() {
-        $(".button-backlog").on("click", function() {
+          </div>
+    <script>
+        // Simple JavaScript to show a message when button is clicked
+        //Init
+        init();
+        
+        //Button Functions------------------------------------------
+        function init() {
+          $(".button-backlog").on("click", function() {
             if (!($(this).closest(".backlog").length > 0)) {
-                $(this).parents(".input-group").appendTo(".backlog").css({
-                    "background-color": "",
-                    "border": ""
-                });
+              $(this).parents(".input-group").appendTo(".backlog").css({
+                "background-color": "",
+                "border": ""
+              });
             }
-        });
-        $(".button-progress").on("click", function() {
+          });
+          $(".button-progress").on("click", function() {
             if (!($(this).closest(".in-progress").length > 0)) {
-                $(this).parents(".input-group").appendTo(".in-progress").css({
-                    "background-color": "#ffdfbc",
-                    "border": "none"
-                });
+              $(this).parents(".input-group").appendTo(".in-progress").css({
+                "background-color": "#ffdfbc",
+                "border": "none"
+              });
             }
-        });
-        $(".button-done").on("click", function() {
+          });
+          $(".button-done").on("click", function() {
             if (!($(this).closest(".done").length > 0)) {
-                $(this).parents(".input-group").appendTo(".done").css({
-                    "background-color": "#cfffd0",
-                    "border": "none"
-                });
+              $(this).parents(".input-group").appendTo(".done").css({
+                "background-color": "#cfffd0",
+                "border": "none"
+              });
+        
             }
-        });
-        $(".button-delete").on("click", function() {
+          });
+          $(".button-delete").on("click", function() {
             $(this).parents(".input-group").remove();
-        });
-
-        var placeholderDiv = document.createElement("div");
-        placeholderDiv.className = "placeholder";
-
-        //DRAG Functions------------------------------------------
-        //Drag - onmousedown
-        $(".drag").on("mousedown", function() {
+          });
+        
+          var placeholderDiv = document.createElement("div");
+          var placeholderAtt = document.createAttribute("class");
+          var taskDivAttVal = placeholderAtt.value = "placeholder";
+          placeholderDiv.setAttributeNode(placeholderAtt);
+        
+          //DRAG Functions------------------------------------------
+          //Drag - onmousedown
+          $(".drag").on("mousedown", function() {
             var taskWidth = $(this).parents(".input-group").width();
+            var taskHeight = $(this).parents(".input-group").height();
             var $this = $(this);
             $(this).parents(".input-group").css({
-                "position": "absolute",
-                "width": taskWidth
+              "position": "absolute",
+              "width": taskWidth
             });
-
+        
             $(this).parents(".input-group").after(placeholderDiv);
-            $(".backlog").css({"background-color": "#fffce0"});
-            $(".in-progress").css({"background-color": "#fffce0"});
-            $(".done").css({"background-color": "#fffce0"});
-
+            $(".backlog").css({"background-color" : "#fffce0"});
+            $(".in-progress").css({"background-color" : "#fffce0"});
+            $(".done").css({"background-color" : "#fffce0"});
+        
             //Drag - onmousemove
             $(document.body).on("mousemove", function(event) {
-                $this.parents(".input-group").css({
-                    "top": event.pageY - 13,
-                    "left": event.pageX - taskWidth,
-                    "z-index": "1000"
-                });
+              $this.parents(".input-group").css({
+                "position": "absolute",
+                "top": event.pageY - 13,
+                "left": event.pageX - taskWidth,
+                "width": taskWidth,
+                "z-index": "1000"
+              });
             });
-        });
-
-        //Drag - onmouseup
-        $(document.body).on("mouseup", function() {
-            $(".input-group").each(function() {
-                if ($(this).is(":hover")) {
-                    $(this).after(placeholderDiv);
-                    return false;
-                }
-            });
+          });
+        
+          //Drag - onmouseup
+          $(".drag").on("mouseup", function() {
+            $(this).parents(".input-group").after(placeholderDiv);
             placeholderDiv.remove();
-            $(".input-group").removeAttr("style");
+            $(this).parents(".input-group").removeAttr("style");
             $(document.body).unbind("mousemove");
-            $(".backlog").css({"background-color": ""});
-            $(".in-progress").css({"background-color": ""});
-            $(".done").css({"background-color": ""});
+            $(".backlog").css({"background-color" : ""});
+            $(".in-progress").css({"background-color" : ""});
+            $(".done").css({"background-color" : ""});
+          });
+        
+        }
+        
+        //Create Task------------------------------------------
+        $("#add-button").on("click", function() {
+        
+          var taskDiv = document.createElement("div");
+          var taskSpan = document.createElement("span");
+          var buttonsDiv = document.createElement("div");
+          var buttonBacklog = document.createElement("button");
+          var buttonProgress = document.createElement("button");
+          var buttonDone = document.createElement("button");
+          var buttonDelete = document.createElement("button");
+        
+          var taskDivAtt = document.createAttribute("class");
+          var buttonsDivAtt = document.createAttribute("class");
+          var buttonBacklogAtt = document.createAttribute("class");
+          var buttonProgressAtt = document.createAttribute("class");
+          var buttonDoneAtt = document.createAttribute("class");
+          var buttonDeleteAtt = document.createAttribute("class");
+        
+          var taskDivAttVal = taskDivAtt.value = "input-group overflow";
+          var buttonsDivAttVal = buttonsDivAtt.value = "margin-top-10";
+          var buttonBacklogAttVal = buttonBacklogAtt.value = "button button-backlog";
+          var buttonProgressAttVal = buttonProgressAtt.value = "button button-progress";
+          var buttonDoneAttVal = buttonDoneAtt.value = "button button-done";
+          var buttonDeleteAttVal = buttonDeleteAtt.value = "button button-delete";
+        
+          taskDiv.setAttributeNode(taskDivAtt);
+          buttonsDiv.setAttributeNode(buttonsDivAtt);
+          buttonBacklog.setAttributeNode(buttonBacklogAtt);
+          buttonProgress.setAttributeNode(buttonProgressAtt);
+          buttonDone.setAttributeNode(buttonDoneAtt);
+          buttonDelete.setAttributeNode(buttonDeleteAtt);
+        
+          var taskText = document.createTextNode($("#task").val());
+          var buttonBacklogText = document.createTextNode("Backlog");
+          var buttonProgressText = document.createTextNode("In Progress");
+          var buttonDoneText = document.createTextNode("Done");
+          var buttonDeleteText = document.createTextNode("Delete");
+        
+          taskSpan.appendChild(taskText);
+          taskDiv.appendChild(taskSpan);
+          taskDiv.appendChild(buttonsDiv);
+          buttonBacklog.appendChild(buttonBacklogText);
+          buttonProgress.appendChild(buttonProgressText);
+          buttonDone.appendChild(buttonDoneText);
+          buttonDelete.appendChild(buttonDeleteText);
+          buttonsDiv.appendChild(buttonBacklog);
+          buttonsDiv.appendChild(buttonProgress);
+          buttonsDiv.appendChild(buttonDone);
+          buttonsDiv.appendChild(buttonDelete);
+        
+          $('.backlog').append(taskDiv);
+        
+          init();
+        
         });
-    }
-
-    //Create Task------------------------------------------
-    $("#add-button").on("click", function() {
-        var taskDiv = document.createElement("div");
-        var taskSpan = document.createElement("span");
-        var buttonsDiv = document.createElement("div");
-        var buttonBacklog = document.createElement("button");
-        var buttonProgress = document.createElement("button");
-        var buttonDone = document.createElement("button");
-        var buttonDelete = document.createElement("button");
-
-        taskDiv.className = "input-group overflow";
-        buttonsDiv.className = "margin-top-10";
-        buttonBacklog.className = "button button-backlog";
-        buttonProgress.className = "button button-progress";
-        buttonDone.className = "button button-done";
-        buttonDelete.className = "button button-delete";
-
-        taskSpan.textContent = $("#task").val();
-        buttonBacklog.textContent = "Backlog";
-        buttonProgress.textContent = "In Progress";
-        buttonDone.textContent = "Done";
-        buttonDelete.textContent = "Delete";
-
-        buttonsDiv.append(buttonBacklog, buttonProgress, buttonDone, buttonDelete);
-        taskDiv.append(taskSpan, buttonsDiv);
-
-        $('.backlog').append(taskDiv);
-        init();
-        $("#task").val(""); // Clear input
-    });
-</script>
-
+    </script>
 </body>
 </html>
